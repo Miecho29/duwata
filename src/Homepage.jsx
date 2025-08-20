@@ -162,7 +162,7 @@ const Homepage = () => {
                     </div>
                   </div>
                   <Link
-                    to="/venue-details"
+                    to="/Details"
                     className="inline-block mt-3 bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition-all"
                   >
                     View Details
