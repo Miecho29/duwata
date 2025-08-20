@@ -5,12 +5,18 @@ import {
   faStar as solidStar,
   faStarHalfAlt,
   faRightFromBracket,
+  faEnvelope, // Message Icon
+  faBell, // Notification Icon
 } from "@fortawesome/free-solid-svg-icons";
 import { faStar as regularStar } from "@fortawesome/free-regular-svg-icons";
 
 const Homepage = () => {
   const navigate = useNavigate();
   const [showLogoutModal, setShowLogoutModal] = useState(false);
+
+  // State for notification and message toggles (just as examples)
+  const [showNotifications, setShowNotifications] = useState(false);
+  const [showMessages, setShowMessages] = useState(false);
 
   const venues = [
     {
@@ -91,6 +97,28 @@ const Homepage = () => {
             </button>
           </div>
 
+          {/* Message Icon */}
+          <div className="absolute top-0 right-16 mt-2 sm:mt-4 sm:mr-8">
+            <button
+              onClick={() => setShowMessages(!showMessages)} // Toggle message view
+              className="text-green-600 hover:text-green-800 transition text-2xl cursor-pointer"
+              aria-label="Messages"
+            >
+              <FontAwesomeIcon icon={faEnvelope} />
+            </button>
+          </div>
+
+          {/* Notification Icon */}
+          <div className="absolute top-0 right-8 mt-2 sm:mt-4 sm:mr-6">
+            <button
+              onClick={() => setShowNotifications(!showNotifications)} // Toggle notification view
+              className="text-green-600 hover:text-green-800 transition text-2xl cursor-pointer"
+              aria-label="Notifications"
+            >
+              <FontAwesomeIcon icon={faBell} />
+            </button>
+          </div>
+
           {/* User Greeting */}
           <div className="flex items-center space-x-4">
             <Link to="/PersonalInfo">
@@ -127,20 +155,13 @@ const Homepage = () => {
 
           {/* Quick Actions */}
           <div className="grid grid-cols-2 sm:grid-cols-5 md:grid-cols-6 gap-6 text-center">
-            {[
-              { emoji: "📅", label: "My Calendar" },
-              { emoji: "✏️", label: "Create Venue" },
-              { emoji: "⚡", label: "My Venues" },
-              { emoji: "⭐", label: "Favourite Venues" },
-              { emoji: "🏆", label: "Leaderboard" },
-              { emoji: "🔥", label: "Offers" },
-            ].map((item, index) => (
+            {[...Array(6)].map((_, index) => (
               <div
                 key={index}
                 className="bg-white rounded-2xl p-5 shadow-md hover:shadow-xl transition-all duration-200 cursor-pointer border border-transparent hover:border-green-400"
               >
-                <div className="text-3xl mb-2">{item.emoji}</div>
-                <div className="font-semibold text-gray-700">{item.label}</div>
+                <div className="text-3xl mb-2">{['📅', '✏️', '⚡', '⭐', '🏆', '🔥'][index]}</div>
+                <div className="font-semibold text-gray-700">{['My Calendar', 'Create Venue', 'My Venues', 'Favourite Venues', 'Leaderboard', 'Offers'][index]}</div>
               </div>
             ))}
           </div>
@@ -195,7 +216,7 @@ const Homepage = () => {
         </div>
       </div>
 
-      {/* Logout Confirmation Modal (No black overlay) */}
+      {/* Logout Confirmation Modal */}
       {showLogoutModal && (
         <div
           className="fixed inset-0 z-50 flex items-center justify-center"

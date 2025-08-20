@@ -58,7 +58,7 @@ const Details = () => {
         />
 
         <div className="flex justify-between items-center text-lg text-gray-700 mb-2">
-          <span>⏰ Open Hours: <strong>{venue.hours}</strong></span>
+          <span> Open Hours: <strong>{venue.hours}</strong></span>
           <span className="text-green-600 font-semibold"> {venue.price}</span>
         </div>
 
@@ -86,7 +86,7 @@ const Details = () => {
         {/* Book Now Button */}
         <div className="mt-6">
           <Link
-            to="/booking" // Replace with your booking route
+            to="/Calendar" 
             className="inline-block bg-green-600 text-white px-6 py-3 rounded hover:bg-green-700 transition-all text-lg font-semibold"
           >
             Book Now
