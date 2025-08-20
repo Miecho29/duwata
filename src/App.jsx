@@ -6,7 +6,7 @@ import Booknow from './Booknow';
 import Login from './Login';
 import Details from './Details';
 import PersonalInfo from './PersonalInfo';
-
+import Calendar from './Calendar';
 
 function App() {
   return (
@@ -17,6 +17,7 @@ function App() {
           <Route path="Login" element={<Login />} />
           <Route path="Details" element={<Details />} />
           <Route path="PersonalInfo" element={<PersonalInfo />} />
+          <Route path="Calendar" element={<Calendar />} />
         </Routes>
     </Router>
   );
