@@ -5,16 +5,14 @@ import {
   faStar as solidStar,
   faStarHalfAlt,
   faRightFromBracket,
-  faEnvelope, // Message Icon
-  faBell, // Notification Icon
+  faEnvelope, 
+  faBell, 
 } from "@fortawesome/free-solid-svg-icons";
 import { faStar as regularStar } from "@fortawesome/free-regular-svg-icons";
 
 const Homepage = () => {
   const navigate = useNavigate();
   const [showLogoutModal, setShowLogoutModal] = useState(false);
-
-  // State for notification and message toggles (just as examples)
   const [showNotifications, setShowNotifications] = useState(false);
   const [showMessages, setShowMessages] = useState(false);
 
@@ -149,7 +147,7 @@ const Homepage = () => {
               to="/Booknow"
               className="bg-white text-green-600 font-semibold px-6 py-2 rounded-full shadow-md hover:bg-green-100 transition-all"
             >
-              Book Now 
+              Book Now
             </Link>
           </div>
 
@@ -181,8 +179,7 @@ const Homepage = () => {
                   <img
                     src={venue.image}
                     alt={venue.name}
-                    className="w-full h-48 object-cover cursor-pointer"
-                    onClick={() => navigate("/PersonalInfo")}
+                    className="w-full h-48 object-cover"
                   />
                   <div className="p-4">
                     <h3 className="text-lg font-semibold text-gray-800">
@@ -224,15 +221,8 @@ const Homepage = () => {
           aria-modal="true"
           aria-labelledby="modal-title"
         >
-          <div
-            className="bg-white rounded-3xl shadow-xl max-w-md w-full p-8 mx-4 text-center
-                       transform scale-75 opacity-0
-                       animate-popIn"
-          >
-            <h3
-              id="modal-title"
-              className="text-2xl font-bold text-green-700 mb-6"
-            >
+          <div className="bg-white rounded-3xl shadow-xl max-w-md w-full p-8 mx-4 text-center">
+            <h3 id="modal-title" className="text-2xl font-bold text-green-700 mb-6">
               Are you sure you want to logout?
             </h3>
             <div className="flex justify-center gap-8">
@@ -253,23 +243,6 @@ const Homepage = () => {
           </div>
         </div>
       )}
-
-      {/* Modal Pop-in Animation */}
-      <style>{`
-        @keyframes popIn {
-          0% {
-            opacity: 0;
-            transform: scale(0.75);
-          }
-          100% {
-            opacity: 1;
-            transform: scale(1);
-          }
-        }
-        .animate-popIn {
-          animation: popIn 0.3s ease forwards;
-        }
-      `}</style>
     </>
   );
 };
