@@ -4,6 +4,8 @@ import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import Homepage from './Homepage';
 import Booknow from './Booknow';
 import Login from './Login';
+import Details from './Details';
+
 
 function App() {
   return (
@@ -12,6 +14,7 @@ function App() {
           <Route path="/" element={<Homepage />} />
           <Route path="Booknow" element={<Booknow />} />
           <Route path="Login" element={<Login />} />
+          <Route path="Details" element={<Details />} />
         </Routes>
     </Router>
   );
