@@ -5,6 +5,7 @@ import Homepage from './Homepage';
 import Booknow from './Booknow';
 import Login from './Login';
 import Details from './Details';
+import PersonalInfo from './PersonalInfo';
 
 
 function App() {
@@ -15,6 +16,7 @@ function App() {
           <Route path="Booknow" element={<Booknow />} />
           <Route path="Login" element={<Login />} />
           <Route path="Details" element={<Details />} />
+          <Route path="PersonalInfo" element={<PersonalInfo />} />
         </Routes>
     </Router>
   );
