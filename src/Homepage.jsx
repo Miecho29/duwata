@@ -5,8 +5,8 @@ import {
   faStar as solidStar,
   faStarHalfAlt,
   faRightFromBracket,
-  faEnvelope, 
-  faBell, 
+  faEnvelope,
+  faBell,
 } from "@fortawesome/free-solid-svg-icons";
 import { faStar as regularStar } from "@fortawesome/free-regular-svg-icons";
 
@@ -98,7 +98,7 @@ const Homepage = () => {
           {/* Message Icon */}
           <div className="absolute top-0 right-16 mt-2 sm:mt-4 sm:mr-8">
             <button
-              onClick={() => setShowMessages(!showMessages)} // Toggle message view
+              onClick={() => setShowMessages(!showMessages)}
               className="text-green-600 hover:text-green-800 transition text-2xl cursor-pointer"
               aria-label="Messages"
             >
@@ -109,7 +109,7 @@ const Homepage = () => {
           {/* Notification Icon */}
           <div className="absolute top-0 right-8 mt-2 sm:mt-4 sm:mr-6">
             <button
-              onClick={() => setShowNotifications(!showNotifications)} // Toggle notification view
+              onClick={() => setShowNotifications(!showNotifications)}
               className="text-green-600 hover:text-green-800 transition text-2xl cursor-pointer"
               aria-label="Notifications"
             >
@@ -153,13 +153,19 @@ const Homepage = () => {
 
           {/* Quick Actions */}
           <div className="grid grid-cols-2 sm:grid-cols-5 md:grid-cols-6 gap-6 text-center">
-            {[...Array(6)].map((_, index) => (
+            {['My Calendar', 'Create Venue', 'My Venues', 'Favourite Venues', 'Leaderboard', 'Offers'].map((label, index) => (
               <div
                 key={index}
                 className="bg-white rounded-2xl p-5 shadow-md hover:shadow-xl transition-all duration-200 cursor-pointer border border-transparent hover:border-green-400"
+                onClick={() => {
+                  if (label === 'Create Venue') {
+                    navigate('/CreateVenue');
+                  }
+                  // Add more navigations as needed
+                }}
               >
                 <div className="text-3xl mb-2">{['📅', '✏️', '⚡', '⭐', '🏆', '🔥'][index]}</div>
-                <div className="font-semibold text-gray-700">{['My Calendar', 'Create Venue', 'My Venues', 'Favourite Venues', 'Leaderboard', 'Offers'][index]}</div>
+                <div className="font-semibold text-gray-700">{label}</div>
               </div>
             ))}
           </div>
