@@ -7,6 +7,7 @@ import Login from './Login';
 import Details from './Details';
 import PersonalInfo from './PersonalInfo';
 import Calendar from './Calendar';
+import CreateVenue from './CreateVenue';
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
           <Route path="Details" element={<Details />} />
           <Route path="PersonalInfo" element={<PersonalInfo />} />
           <Route path="Calendar" element={<Calendar />} />
+          <Route path="CreateVenue" element={<CreateVenue />} />
         </Routes>
     </Router>
   );

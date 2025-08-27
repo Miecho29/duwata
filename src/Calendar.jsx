@@ -62,19 +62,24 @@ const Calendar = () => {
   };
 
   const isDayFullyBooked = () => {
+    if (!selectedDate) return false;
     const timesForDate = availableTimes.length > 0 ? availableTimes : getTimesForDate(selectedDate);
     return timesForDate.every(slot => slot.booked);
   };
 
   const renderTimeSlots = () => {
     return availableTimes.map((slot, index) => (
-      <div key={index} className="flex justify-between items-center mb-2 p-3 rounded-md bg-white shadow-md hover:shadow-lg transition-all hover:scale-105">
-        <span className="text-lg font-semibold">{slot.time}</span>
+      <div
+        key={index}
+        className="flex justify-between items-center mb-2 p-4 rounded-lg bg-gradient-to-r from-white to-gray-50 shadow transition hover:shadow-xl hover:scale-105 duration-300 ease-in-out"
+      >
+        <span className="text-lg font-semibold text-gray-700">{slot.time}</span>
         <span
-          className={`font-semibold ${slot.booked ? "text-red-500" : "text-green-500"}`}
+          className={`flex items-center gap-2 font-semibold text-sm px-2 py-1 rounded-full
+            ${slot.booked ? "bg-red-100 text-red-600" : "bg-green-100 text-green-600"}`}
         >
-          <FontAwesomeIcon icon={slot.booked ? faTimesCircle : faCheckCircle} className="mr-2" />
-          {slot.booked ? "Fully Booked" : "Available"}
+          <FontAwesomeIcon icon={slot.booked ? faTimesCircle : faCheckCircle} />
+          {slot.booked ? "Booked" : "Available"}
         </span>
       </div>
     ));
@@ -96,76 +101,104 @@ const Calendar = () => {
         setCurrentMonth(currentMonth - 1);
       }
     }
+    setSelectedDate(null);
+    setAvailableTimes([]);
   };
 
   return (
     <div className="min-h-screen bg-gray-50 flex justify-center items-start py-10 px-4">
-      <div className="w-full max-w-7xl bg-white p-8 rounded-xl shadow-xl relative flex">
+      <div className="w-full max-w-7xl bg-white p-6 rounded-xl shadow-xl flex flex-col md:flex-row gap-8 relative">
 
         {/* Back Icon */}
         <div className="absolute top-0 left-0 mt-4 ml-4">
           <Link
             to="/"
             title="Back to Homepage"
-            className="text-blue-600 hover:text-blue-800 transition-all text-2xl"
+            className="text-green-400 hover:text-green-400 transition-all text-2xl"
           >
             <FontAwesomeIcon icon={faArrowLeft} />
           </Link>
         </div>
 
         {/* Left: Calendar */}
-        <div className="w-2/3 pr-6">
+        <div className="w-full md:w-2/3 pr-0 md:pr-6">
           <div className="flex justify-between items-center mb-6">
-            <button 
-              onClick={() => changeMonth('prev')} 
-              className="text-blue-600 hover:text-blue-800 transition-all p-2 rounded-full hover:bg-blue-100"
+            <button
+              onClick={() => changeMonth('prev')}
+              className="text-green-400 hover:text-green-400 transition-all p-2 rounded-full hover:bg-green-400"
+              aria-label="Previous Month"
             >
               <FontAwesomeIcon icon={faChevronLeft} size="lg" />
             </button>
-            <h3 className="text-2xl font-bold text-center text-gray-800">
+            <h3 className="text-2xl font-bold text-center text-gray-800 flex-grow">
               {`${new Date(currentYear, currentMonth).toLocaleString('default', { month: 'long' })} ${currentYear}`}
             </h3>
-            <button 
-              onClick={() => changeMonth('next')} 
-              className="text-blue-600 hover:text-blue-800 transition-all p-2 rounded-full hover:bg-blue-100"
+            <button
+              onClick={() => changeMonth('next')}
+              className="text-green-400 hover:text-green-400 transition-all p-2 rounded-full hover:bg-green-400"
+              aria-label="Next Month"
             >
               <FontAwesomeIcon icon={faChevronRight} size="lg" />
             </button>
           </div>
 
+          {/* Weekday Headers */}
+          <div className="grid grid-cols-7 gap-2 mb-2 text-center font-semibold text-gray-500 select-none">
+            {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((day) => (
+              <div key={day}>{day}</div>
+            ))}
+          </div>
+
           {/* Calendar Grid */}
           <div className="grid grid-cols-7 gap-2 mb-6">
-            {generateCalendar().map((date, index) => (
-              <div
-                key={index}
-                className={`text-center p-4 rounded-lg cursor-pointer 
-                  ${date ? 'hover:bg-blue-100 hover:border-blue-300 transition-all' : 'opacity-50'} 
-                  ${date && date === selectedDate ? 'bg-blue-100 border-2 border-blue-400' : ''}
-                `}
-                onClick={() => date && handleDateClick(date)}
-              >
-                {date ? new Date(date).getDate() : ''}
-              </div>
-            ))}
+            {generateCalendar().map((date, index) => {
+              const daySlots = bookedSlots.filter(slot => slot.date === date);
+              const isBooked = daySlots.length > 0 && daySlots.every(slot => slot.booked);
+              const isToday = date === new Date().toISOString().split("T")[0];
+
+              return (
+                <div
+                  key={index}
+                  className={`text-center p-4 rounded-xl cursor-pointer relative transition-all duration-200 ease-in-out
+                    ${date ? "hover:bg-green-400 hover:scale-105" : "opacity-50 cursor-default"}
+                    ${date && date === selectedDate ? "bg-green-400 border-2 border-green-400 font-bold shadow-md" : ""}
+                    ${isToday ? "border-2 border-green-400" : ""}
+                  `}
+                  onClick={() => date && handleDateClick(date)}
+                  title={isBooked ? "All slots booked" : "Slots available"}
+                >
+                  <div className="text-lg select-none">
+                    {date ? new Date(date).getDate() : ''}
+                  </div>
+                  {/* Booked Dot */}
+                  {isBooked && (
+                    <div className="w-2 h-2 bg-red-500 rounded-full absolute bottom-2 left-1/2 transform -translate-x-1/2"></div>
+                  )}
+                </div>
+              );
+            })}
           </div>
         </div>
 
         {/* Right: Available Times */}
-        <div className="w-1/3">
-          {selectedDate && (
+        <div className="w-full md:w-1/3">
+          {selectedDate ? (
             <div>
-              <h4 className="text-lg font-semibold text-gray-700 mb-4">
+              {/* <h4 className="text-lg font-semibold text-gray-700 mb-4">
                 Available Times for <span className="text-blue-600">{selectedDate}</span>
-              </h4>
+              </h4> */}
               {renderTimeSlots()}
 
-              {/* Day Status */}
+              {/* Day Status Badge */}
               <div className="mt-4">
-                <span className={`font-bold text-xl ${isDayFullyBooked() ? 'text-red-500' : 'text-green-500'}`}>
-                  {isDayFullyBooked() ? "Fully Booked" : "Available"}
+                <span className={`inline-block px-4 py-2 rounded-full text-sm font-semibold
+                  ${isDayFullyBooked() ? 'bg-red-100 text-red-600' : 'bg-green-100 text-green-600'}`}>
+                  {isDayFullyBooked() ? "All Slots Booked" : "Open Slots Available"}
                 </span>
               </div>
             </div>
+          ) : (
+            <p className="text-gray-400 italic">Select a date to see available time slots</p>
           )}
         </div>
       </div>
