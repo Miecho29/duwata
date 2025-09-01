@@ -8,6 +8,8 @@ import Details from './Details';
 import PersonalInfo from './PersonalInfo';
 import Calendar from './Calendar';
 import CreateVenue from './CreateVenue';
+import Register from './register';
+import BookingSummary from './BookingSummary';
 
 function App() {
   return (
@@ -20,6 +22,8 @@ function App() {
           <Route path="PersonalInfo" element={<PersonalInfo />} />
           <Route path="Calendar" element={<Calendar />} />
           <Route path="CreateVenue" element={<CreateVenue />} />
+          <Route path="Register" element={<Register />} />
+           <Route path="BookingSummary" element={<BookingSummary />} />
         </Routes>
     </Router>
   );
