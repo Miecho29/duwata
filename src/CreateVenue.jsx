@@ -1,5 +1,7 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 
 const CreateVenue = () => {
   const navigate = useNavigate();
@@ -30,12 +32,22 @@ const CreateVenue = () => {
   };
 
   return (
-    <div className="min-h-screen w-full bg-gradient-to-b from-white via-green-50 to-white flex justify-center items-start py-12 px-4 sm:px-8 lg:px-16 font-sans text-gray-800">
+    <div className="relative min-h-screen w-full bg-gradient-to-b from-white via-green-50 to-white flex justify-center items-start py-12 px-4 sm:px-8 lg:px-16 font-sans text-gray-800">
+      {/* Back to Homepage Link */}
+      <div className="absolute top-0 left-0 mt-2 ml-2 sm:mt-4 sm:ml-4">
+        <Link
+          to="/"
+          title="Back to Homepage"
+          className="text-green-600 hover:text-green-800 transition"
+        >
+          <FontAwesomeIcon icon={faArrowLeft} className="text-2xl" />
+        </Link>
+      </div>
+
       <div className="w-full max-w-2xl bg-white p-8 rounded-3xl shadow-md">
         <h2 className="text-3xl font-bold text-green-700 mb-6">Create a Venue</h2>
 
         <form onSubmit={handleSubmit} className="space-y-6">
-
           {/* Venue Name */}
           <div>
             <label className="block text-gray-700 font-medium mb-1">Venue Name</label>
