@@ -2,102 +2,81 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faArrowLeft,
   faUniversity,
   faMobileAlt,
-  faCreditCard,
+  faWallet,
+  faMoneyBillWave,
+  faCheckCircle,
 } from "@fortawesome/free-solid-svg-icons";
 
-const paymentOptions = [
-  {
-    id: "bank",
-    label: "Bank Transfer",
-    icon: faUniversity,
-  },
-  {
-    id: "gcash",
-    label: "GCash",
-    icon: faMobileAlt,
-  },
-  {
-    id: "maya",
-    label: "Maya",
-    icon: faCreditCard,
-  },
-];
-
 const Payment = () => {
-  const [selectedPayment, setSelectedPayment] = useState("");
+  const [selectedPayment, setSelectedPayment] = useState(null);
 
-  const handlePaymentChange = (method) => {
-    setSelectedPayment(method);
-  };
+  const paymentOptions = [
+    { name: "Bank Transfer", icon: faUniversity },
+    { name: "GCash", icon: faMobileAlt },
+    { name: "Maya", icon: faWallet },
+    { name: "Cash", icon: faMoneyBillWave },
+  ];
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log("Selected Payment Option:", selectedPayment);
+  const bookingData = {
+    bookingId: "ABC123456",
+    name: "Giorgano Williams",
+    date: "20 July 2025",
+    hours: "2",
+    venueName: "The Gourmet Spot",
+    location: "123 Food Street",
+    contactPersonName: "John Doe",
+    contactPersonNumber: "+639231231331",
+    paymentMethod: "Cash",
+    price: "₱1,000.00",
   };
 
   return (
-    <div className="relative min-h-screen w-full bg-gradient-to-b from-white via-green-50 to-white flex justify-center items-start py-12 px-4 sm:px-8 lg:px-16 font-sans text-gray-800">
+    <div className="min-h-screen bg-gray-100 flex justify-center items-start py-10 px-6">
+      <div className="bg-white rounded-xl shadow-xl max-w-md w-full p-8 text-center">
+        {/* Green check icon */}
+        <div className="text-green-600 mb-6 flex justify-center">
+          <FontAwesomeIcon icon={faCheckCircle} className="text-[64px]" />
+        </div>
 
-      {/* Back Button */}
-      <div className="absolute top-0 left-0 mt-2 ml-2 sm:mt-4 sm:ml-4">
-        <Link to="/BookingSummary" title="Back to Homepage" className="text-green-600 hover:text-green-800 transition">
-          <FontAwesomeIcon icon={faArrowLeft} className="text-2xl" />
+        {/* Heading */}
+        <h1 className="text-3xl font-bold text-gray-900 mb-2">Congratulations!</h1>
+        <p className="text-gray-600 mb-8">
+          You've successfully reserved in this Venue
+        </p>
+
+        {/* Booking details */}
+        <div className="text-left space-y-4 text-gray-800 text-lg font-semibold">
+          <DetailRow label="Booking ID" value={bookingData.bookingId} />
+          <DetailRow label="Name" value={bookingData.name} />
+          <DetailRow label="Date" value={bookingData.date} />
+          <DetailRow label="Hours" value={bookingData.hours} />
+          <DetailRow label="Venue Name" value={bookingData.venueName} />
+          <DetailRow label="Location" value={bookingData.location} />
+          <DetailRow label="Contact Person Name" value={bookingData.contactPersonName} />
+          <DetailRow label="Contact Person Number" value={bookingData.contactPersonNumber} />
+          <DetailRow label="Payment Method" value={bookingData.paymentMethod} />
+          <DetailRow label="Price" value={bookingData.price} />
+        </div>
+
+        {/* Back to Home link */}
+        <Link
+          to="/" // Update this to your homepage route
+          className="mt-10 bg-green-600 text-white w-full py-3 rounded-lg font-semibold hover:bg-green-700 transition inline-block text-center"
+        >
+          Back to Home
         </Link>
-      </div>
-
-      <div className="w-full max-w-2xl bg-white p-30 rounded-3xl shadow-xl">
-        <h2 className="text-3xl font-bold text-green-700 mb-8 text-center">Choose Payment Method</h2>
-
-        <form onSubmit={handleSubmit} className="space-y-6">
-
-          {/* Payment Option Cards */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-            {paymentOptions.map((option) => (
-              <div
-                key={option.id}
-                onClick={() => handlePaymentChange(option.id)}
-                className={`cursor-pointer border-2 rounded-xl p-6 flex flex-col items-center justify-center text-center transition-all duration-300 shadow-sm hover:shadow-md ${
-                  selectedPayment === option.id ? "border-green-600 bg-green-50" : "border-gray-200"
-                }`}
-              >
-                <FontAwesomeIcon
-                  icon={option.icon}
-                  className={`text-3xl mb-3 ${
-                    selectedPayment === option.id ? "text-green-600" : "text-gray-500"
-                  }`}
-                />
-                <span className="font-medium text-gray-800">{option.label}</span>
-                <input
-                  type="radio"
-                  name="paymentMethod"
-                  value={option.id}
-                  checked={selectedPayment === option.id}
-                  onChange={() => handlePaymentChange(option.id)}
-                  className="hidden"
-                />
-              </div>
-            ))}
-          </div>
-
-          {/* Submit Button */}
-          <div className="pt-6">
-            <button
-              type="submit"
-              className={`w-full bg-green-600 text-white font-semibold px-6 py-3 rounded-full shadow-md hover:bg-green-700 transition-all ${
-                !selectedPayment ? "opacity-50 cursor-not-allowed" : ""
-              }`}
-              disabled={!selectedPayment}
-            >
-              Continue with {selectedPayment ? paymentOptions.find(p => p.id === selectedPayment)?.label : "Payment"}
-            </button>
-          </div>
-        </form>
       </div>
     </div>
   );
 };
+
+const DetailRow = ({ label, value }) => (
+  <div className="flex justify-between border-b border-gray-300 pb-2">
+    <span className="font-normal">{label}</span>
+    <span>{value}</span>
+  </div>
+);
 
 export default Payment;
