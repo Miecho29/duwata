@@ -26,6 +26,9 @@ const Calendar = () => {
   const [currentMonth, setCurrentMonth] = useState(new Date().getMonth());
   const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
 
+  // New state to track selected time slots
+  const [selectedTimes, setSelectedTimes] = useState([]);
+
   const generateCalendar = () => {
     const firstDayOfMonth = new Date(currentYear, currentMonth, 1);
     const lastDayOfMonth = new Date(currentYear, currentMonth + 1, 0);
@@ -49,6 +52,7 @@ const Calendar = () => {
     setSelectedDate(date);
     const timesForDate = getTimesForDate(date);
     setAvailableTimes(timesForDate);
+    setSelectedTimes([]); // Clear previous time selections when date changes
   };
 
   const getTimesForDate = (date) => {
@@ -87,22 +91,41 @@ const Calendar = () => {
     return timesForDate.every((slot) => slot.booked);
   };
 
+  // Toggle selection of a time slot if available
+  const toggleTimeSelection = (time) => {
+    if (selectedTimes.includes(time)) {
+      setSelectedTimes(selectedTimes.filter((t) => t !== time));
+    } else {
+      setSelectedTimes([...selectedTimes, time]);
+    }
+  };
+
   const renderTimeSlots = () => {
-    return availableTimes.map((slot, index) => (
-      <div
-        key={index}
-        className="flex justify-between items-center mb-2 p-4 rounded-lg bg-gradient-to-r from-white to-gray-50 shadow transition hover:shadow-xl hover:scale-105 duration-300 ease-in-out w-full"
-      >
-        <span className="text-lg font-semibold text-gray-700">{slot.time}</span>
-        <span
-          className={`flex items-center gap-2 font-semibold text-sm px-2 py-1 rounded-full
-            ${slot.booked ? "bg-red-100 text-red-600" : "bg-green-100 text-green-600"}`}
+    return availableTimes.map((slot, index) => {
+      const isSelected = selectedTimes.includes(slot.time);
+      return (
+        <div
+          key={index}
+          onClick={() => !slot.booked && toggleTimeSelection(slot.time)}
+          className={`flex justify-between items-center mb-2 p-4 rounded-lg shadow transition
+            cursor-pointer
+            ${
+              slot.booked
+                ? "bg-red-100 text-red-600 cursor-not-allowed"
+                : isSelected
+                ? "bg-green-400 text-white"
+                : "bg-green-100 text-green-600 hover:shadow-xl hover:scale-105"
+            }
+          `}
         >
-          <FontAwesomeIcon icon={slot.booked ? faTimesCircle : faCheckCircle} />
-          {slot.booked ? "Booked" : "Available"}
-        </span>
-      </div>
-    ));
+          <span className="text-lg font-semibold">{slot.time}</span>
+          <span className="flex items-center gap-2 font-semibold text-sm px-2 py-1 rounded-full">
+            <FontAwesomeIcon icon={slot.booked ? faTimesCircle : faCheckCircle} />
+            {slot.booked ? "Booked" : "Available"}
+          </span>
+        </div>
+      );
+    });
   };
 
   const changeMonth = (direction) => {
@@ -123,13 +146,14 @@ const Calendar = () => {
     }
     setSelectedDate(null);
     setAvailableTimes([]);
+    setSelectedTimes([]);
   };
 
   return (
     <div className="min-h-screen bg-gray-50 flex justify-center items-start py-12 px-4 relative">
       <div className="w-full max-w-4xl bg-white p-6 rounded-2xl shadow-2xl flex flex-col md:flex-row gap-8 relative">
         {/* Back Icon */}
-        <div className="absolute top-0 left-0 mt-4 ml-4">
+        <div className="absolute top-0 left-0 mt-3 ml-3">
           <Link
             to="/"
             title="Back to Homepage"
@@ -214,7 +238,7 @@ const Calendar = () => {
           </div>
 
           {/* Time Slots on Right */}
-          <div className="w-72 border-l border-gray-200 pl-6">
+          <div className="w-72 border-l border-gray-200 pl-6 flex flex-col">
             {selectedDate ? (
               <>
                 <h4 className="text-lg font-semibold text-gray-800 mb-4">
@@ -224,7 +248,9 @@ const Calendar = () => {
                     day: "numeric",
                   })}
                 </h4>
-                <div className="flex flex-col items-start">{renderTimeSlots()}</div>
+                <div className="flex flex-col items-start flex-grow overflow-y-auto max-h-[400px]">
+                  {renderTimeSlots()}
+                </div>
                 <div className="mt-4">
                   <span
                     className={`inline-block px-4 py-2 rounded-full text-sm font-semibold
@@ -239,6 +265,16 @@ const Calendar = () => {
                       : "Open Slots Available"}
                   </span>
                 </div>
+                {/* Confirm Button as Link */}
+                {selectedTimes.length > 0 && (
+                  <Link
+                    to="/BookingSummary"
+                    state={{ date: selectedDate, times: selectedTimes }}
+                    className="mt-6 w-full bg-green-500 hover:bg-green-600 text-white font-semibold py-3 rounded-lg transition block text-center"
+                  >
+                    Confirm Booking
+                  </Link>
+                )}
               </>
             ) : (
               <p className="text-gray-400 italic">
