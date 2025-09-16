@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom"; // ✅ Add this import
 
 const BookingSummary = () => {
   return (
@@ -18,7 +19,7 @@ const BookingSummary = () => {
         <div className="mb-4">
           <h2 className="text-2xl font-semibold text-gray-800">Cebu Sports Club</h2>
           <p className="text-gray-600">Cardinal Rosales Ave, Cebu City, Cebu 6000</p>
-          <p className="text-gray-600">📅 10 SSeptember 2025 | 🕤 Starting 09:30</p>
+          <p className="text-gray-600">📅 10 September 2025 | 🕤 Starting 09:30</p>
         </div>
 
         {/* Price Breakdown */}
@@ -30,7 +31,7 @@ const BookingSummary = () => {
 
           <div className="flex justify-between font-semibold border-t pt-4 mt-2">
             <span>Subtotal</span>
-            <span>1,000.00.00</span>
+            <span>1,000.00</span> {/* Fixed typo: removed extra .00 */}
           </div>
 
           <div className="flex justify-between text-green-600">
@@ -46,8 +47,20 @@ const BookingSummary = () => {
 
         {/* Action Buttons */}
         <div className="mt-6 flex justify-end space-x-4">
-          <button className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition">Cancel</button>
-          <button className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition">Proceed To Payment</button>
+          <Link
+            to="/"
+            title="Cancel Booking"
+            className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition"
+          >
+            Cancel
+          </Link>
+          <Link
+            to="/Payment"
+            title="Proceed to Payment"
+           className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition">
+          
+            Proceed to Payment
+          </Link>
         </div>
       </div>
     </div>
