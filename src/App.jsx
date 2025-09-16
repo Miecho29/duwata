@@ -10,6 +10,7 @@ import Calendar from './Calendar';
 import CreateVenue from './CreateVenue';
 import Register from './register';
 import BookingSummary from './BookingSummary';
+import Payment from './Payment';
 
 function App() {
   return (
@@ -23,7 +24,8 @@ function App() {
           <Route path="Calendar" element={<Calendar />} />
           <Route path="CreateVenue" element={<CreateVenue />} />
           <Route path="Register" element={<Register />} />
-           <Route path="BookingSummary" element={<BookingSummary />} />
+          <Route path="BookingSummary" element={<BookingSummary />} />
+          <Route path="Payment" element={<Payment />} />
         </Routes>
     </Router>
   );
