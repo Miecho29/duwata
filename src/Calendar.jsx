@@ -155,9 +155,9 @@ const Calendar = () => {
         {/* Back Icon */}
         <div className="absolute top-0 left-0 mt-3 ml-3">
           <Link
-            to="/"
+            to="/Details"
             title="Back to Homepage"
-            className="text-green-400 hover:text-green-600 transition-all text-2xl"
+            className="flex items-center gap-2 text-green-600 hover:text-green-800 transition-all"
           >
             <FontAwesomeIcon icon={faArrowLeft} />
           </Link>

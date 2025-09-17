@@ -158,6 +158,9 @@ const Homepage = () => {
                 key={index}
                 className="bg-white rounded-2xl p-5 shadow-md hover:shadow-xl transition-all duration-200 cursor-pointer border border-transparent hover:border-green-400"
                 onClick={() => {
+                  if (label === 'My Calendar') {
+                    navigate('/Homecalendar');
+                  }
                   if (label === 'Create Venue') {
                     navigate('/CreateVenue');
                   }
