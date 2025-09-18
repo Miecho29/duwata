@@ -73,7 +73,7 @@ const Details = () => {
       {/* Back button */}
       <div className="absolute top-4 left-4">
         <Link
-          to="/"
+          to="/Homepage"
           title="Back to Homepage"
           className="flex items-center gap-2 text-green-600 hover:text-green-800 transition-all"
         >

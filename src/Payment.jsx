@@ -47,11 +47,11 @@ const Payment = () => {
             className="text-green-600 text-5xl sm:text-6xl mb-2"
           />
           <h1 className="text-xl sm:text-2xl font-bold text-gray-800">
-            Payment Successful
+            Booked Successful
           </h1>
-          <p className="text-gray-600 text-sm">
+          {/* <p className="text-gray-600 text-sm">
             Your reservation is confirmed
-          </p>
+          </p> */}
         </div>
 
         {/* Receipt Details */}
@@ -88,7 +88,7 @@ const Payment = () => {
         {/* Action Buttons */}
         <div className="mt-10 flex flex-col sm:flex-row sm:justify-between gap-3">
           <Link
-            to="/"
+            to="/Homepage"
             className="bg-green-600 hover:bg-green-700 text-white py-3 px-4 rounded-md text-center font-semibold transition w-full sm:w-auto"
           >
             Back to Home
