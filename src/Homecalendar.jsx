@@ -73,9 +73,9 @@ function Homecalendar() {
         <FontAwesomeIcon icon={faArrowLeft} size="2x" />
       </Link>
 
-      <div className="max-w-5xl w-full bg-white rounded-xl shadow-lg flex gap-8 font-sans select-none p-6">
+      <div className="max-w-5xl w-full bg-white rounded-xl shadow-lg flex flex-col lg:flex-row gap-8 font-sans select-none p-4 md:p-6">
         {/* Left calendar */}
-        <div className="w-2/3">
+        <div className="w-full lg:w-2/3">
           {/* Header */}
           <div className="flex items-center justify-between mb-6">
             <button
@@ -142,7 +142,7 @@ function Homecalendar() {
         </div>
 
         {/* Right side time slots */}
-        <div className="w-1/3 border-l border-gray-200 pl-6 flex flex-col">
+        <div className="w-full lg:w-1/3 border-t lg:border-t-0 lg:border-l border-gray-200 pt-6 lg:pt-0 lg:pl-6 flex flex-col">
           <div className="mb-6 text-gray-800 font-semibold text-lg select-none">
             {date.toLocaleDateString("en-US", {
               weekday: "long",
@@ -152,7 +152,7 @@ function Homecalendar() {
             })}
           </div>
 
-          <div className="flex flex-col gap-3 overflow-y-auto max-h-[300px]">
+          <div className="flex flex-col gap-3 overflow-y-auto max-h-[50vh] sm:max-h-[300px]">
             {timeSlots.map((time) => {
               const isBooked = bookedSlots.includes(time);
               return (

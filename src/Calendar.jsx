@@ -25,8 +25,6 @@ const Calendar = () => {
 
   const [currentMonth, setCurrentMonth] = useState(new Date().getMonth());
   const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
-
-  // New state to track selected time slots
   const [selectedTimes, setSelectedTimes] = useState([]);
 
   const generateCalendar = () => {
@@ -52,7 +50,7 @@ const Calendar = () => {
     setSelectedDate(date);
     const timesForDate = getTimesForDate(date);
     setAvailableTimes(timesForDate);
-    setSelectedTimes([]); // Clear previous time selections when date changes
+    setSelectedTimes([]);
   };
 
   const getTimesForDate = (date) => {
@@ -91,7 +89,6 @@ const Calendar = () => {
     return timesForDate.every((slot) => slot.booked);
   };
 
-  // Toggle selection of a time slot if available
   const toggleTimeSelection = (time) => {
     if (selectedTimes.includes(time)) {
       setSelectedTimes(selectedTimes.filter((t) => t !== time));
@@ -151,7 +148,7 @@ const Calendar = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 flex justify-center items-start py-12 px-4 relative">
-      <div className="w-full max-w-4xl bg-white p-6 rounded-2xl shadow-2xl flex flex-col md:flex-row gap-8 relative">
+      <div className="w-full max-w-6xl bg-white p-4 sm:p-6 rounded-2xl shadow-2xl flex flex-col lg:flex-row gap-8 relative">
         {/* Back Icon */}
         <div className="absolute top-0 left-0 mt-3 ml-3">
           <Link
@@ -164,7 +161,7 @@ const Calendar = () => {
         </div>
 
         {/* Main Panel - Calendar and Time Slots */}
-        <div className="w-full flex gap-6">
+        <div className="w-full flex flex-col lg:flex-row gap-6">
           {/* Calendar on Left */}
           <div className="flex-grow">
             {/* Month Navigation */}
@@ -191,54 +188,56 @@ const Calendar = () => {
             </div>
 
             {/* Weekday Headers */}
-            <div className="grid grid-cols-7 gap-2 mb-2 text-center font-semibold text-gray-500 select-none">
+            <div className="grid grid-cols-7 gap-1 sm:gap-2 mb-2 text-center font-semibold text-gray-500 select-none">
               {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((day) => (
                 <div key={day}>{day}</div>
               ))}
             </div>
 
             {/* Calendar Grid */}
-            <div className="grid grid-cols-7 gap-2 mb-6">
-              {generateCalendar().map((date, index) => {
-                const daySlots = bookedSlots.filter((slot) => slot.date === date);
-                const isBooked =
-                  daySlots.length > 0 && daySlots.every((slot) => slot.booked);
-                const isToday =
-                  date === new Date().toISOString().split("T")[0];
+            <div className="overflow-x-auto">
+              <div className="grid grid-cols-7 gap-1 sm:gap-2 mb-6">
+                {generateCalendar().map((date, index) => {
+                  const daySlots = bookedSlots.filter((slot) => slot.date === date);
+                  const isBooked =
+                    daySlots.length > 0 && daySlots.every((slot) => slot.booked);
+                  const isToday =
+                    date === new Date().toISOString().split("T")[0];
 
-                return (
-                  <div
-                    key={index}
-                    className={`text-center p-4 rounded-xl cursor-pointer relative transition-all duration-200 ease-in-out
-                    ${
-                      date
-                        ? "hover:bg-green-400 hover:scale-105"
-                        : "opacity-50 cursor-default"
-                    }
-                    ${
-                      date && date === selectedDate
-                        ? "bg-green-400 border-2 border-green-400 font-bold shadow-md"
-                        : ""
-                    }
-                    ${isToday ? "border-2 border-green-400" : ""}
-                  `}
-                    onClick={() => date && handleDateClick(date)}
-                    title={isBooked ? "All slots booked" : "Slots available"}
-                  >
-                    <div className="text-lg select-none">
-                      {date ? new Date(date).getDate() : ""}
+                  return (
+                    <div
+                      key={index}
+                      className={`text-center p-4 rounded-xl cursor-pointer relative transition-all duration-200 ease-in-out
+                        ${
+                          date
+                            ? "hover:bg-green-400 hover:scale-105"
+                            : "opacity-50 cursor-default"
+                        }
+                        ${
+                          date && date === selectedDate
+                            ? "bg-green-400 border-2 border-green-400 font-bold shadow-md"
+                            : ""
+                        }
+                        ${isToday ? "border-2 border-green-400" : ""}
+                      `}
+                      onClick={() => date && handleDateClick(date)}
+                      title={isBooked ? "All slots booked" : "Slots available"}
+                    >
+                      <div className="text-lg select-none">
+                        {date ? new Date(date).getDate() : ""}
+                      </div>
+                      {isBooked && (
+                        <div className="w-2 h-2 bg-red-500 rounded-full absolute bottom-2 left-1/2 transform -translate-x-1/2"></div>
+                      )}
                     </div>
-                    {isBooked && (
-                      <div className="w-2 h-2 bg-red-500 rounded-full absolute bottom-2 left-1/2 transform -translate-x-1/2"></div>
-                    )}
-                  </div>
-                );
-              })}
+                  );
+                })}
+              </div>
             </div>
           </div>
 
           {/* Time Slots on Right */}
-          <div className="w-72 border-l border-gray-200 pl-6 flex flex-col">
+          <div className="w-full lg:w-80 border-t lg:border-t-0 lg:border-l border-gray-200 pt-6 lg:pt-0 lg:pl-6 flex flex-col">
             {selectedDate ? (
               <>
                 <h4 className="text-lg font-semibold text-gray-800 mb-4">
@@ -248,24 +247,23 @@ const Calendar = () => {
                     day: "numeric",
                   })}
                 </h4>
-                <div className="flex flex-col items-start flex-grow overflow-y-auto max-h-[400px]">
+                <div className="flex flex-col items-start flex-grow overflow-y-auto max-h-[300px] sm:max-h-[400px]">
                   {renderTimeSlots()}
                 </div>
                 <div className="mt-4">
                   <span
                     className={`inline-block px-4 py-2 rounded-full text-sm font-semibold
-                    ${
-                      isDayFullyBooked()
-                        ? "bg-red-100 text-red-600"
-                        : "bg-green-100 text-green-600"
-                    }`}
+                      ${
+                        isDayFullyBooked()
+                          ? "bg-red-100 text-red-600"
+                          : "bg-green-100 text-green-600"
+                      }`}
                   >
                     {isDayFullyBooked()
                       ? "All Slots Booked"
                       : "Open Slots Available"}
                   </span>
                 </div>
-                {/* Confirm Button as Link */}
                 {selectedTimes.length > 0 && (
                   <Link
                     to="/BookingSummary"
