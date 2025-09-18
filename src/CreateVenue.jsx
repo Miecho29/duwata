@@ -315,8 +315,18 @@ const CreateVenue = () => {
 
             <button
               type="button"
-              onClick={() => {
+             onClick={() => {
                 if (scheduleInput.date && scheduleInput.startTime && scheduleInput.endTime) {
+                  const isDuplicate = bookingSchedule.some(
+                    (schedule) =>
+                      schedule.date === scheduleInput.date &&
+                      schedule.startTime === scheduleInput.startTime &&
+                      schedule.endTime === scheduleInput.endTime
+                  );
+                  if (isDuplicate) {
+                    alert("This schedule slot already exists."); // or handle silently
+                    return;
+                  }
                   setBookingSchedule([...bookingSchedule, scheduleInput]);
                   setScheduleInput({ date: "", startTime: "", endTime: "" });
                 }
