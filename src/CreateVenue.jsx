@@ -7,17 +7,32 @@ import {
   faMobileAlt,
   faWallet,
   faMoneyBillWave,
-  faTrash, // <-- added trash icon import
+  faTrash,
+  faTimes,
 } from "@fortawesome/free-solid-svg-icons";
 
 const CreateVenue = () => {
   const navigate = useNavigate();
 
+  // Dropdown options for sports
+  const sportsOptions = [
+    "Basketball",
+    "Volleyball",
+    "Badminton",
+    "Tennis",
+    "Football",
+    "Table Tennis",
+    "Baseball",
+    "Swimming",
+    "Cricket",
+    "Running Track",
+  ];
+
   const [formData, setFormData] = useState({
     name: "",
     address: "",
     price: "",
-    typeOfSports: "",
+    typeOfSports: [], // changed to array
     description: "",
     contactPerson: "",
     mobileNumber: "+63",
@@ -106,6 +121,30 @@ const CreateVenue = () => {
     { name: "Cash", icon: faMoneyBillWave },
   ];
 
+  // NEW: handle selection of sports
+  const handleAddSport = (e) => {
+    const selectedSport = e.target.value;
+    if (
+      selectedSport &&
+      !formData.typeOfSports.includes(selectedSport)
+    ) {
+      setFormData({
+        ...formData,
+        typeOfSports: [...formData.typeOfSports, selectedSport],
+      });
+    }
+    // Reset the dropdown value so user can select again
+    e.target.value = "";
+  };
+
+  // NEW: remove selected sport
+  const handleRemoveSport = (sport) => {
+    setFormData({
+      ...formData,
+      typeOfSports: formData.typeOfSports.filter((s) => s !== sport),
+    });
+  };
+
   return (
     <div className="relative min-h-screen w-full bg-gradient-to-b from-white via-green-50 to-white flex justify-center items-start py-12 px-4 sm:px-8 lg:px-16 font-sans text-gray-800">
       <style>{`
@@ -121,7 +160,7 @@ const CreateVenue = () => {
 
       <div className="absolute top-0 left-0 mt-2 ml-2 sm:mt-4 sm:ml-4">
         <Link
-          to="/"
+          to="/Homepage"
           title="Back to Homepage"
           className="flex items-center gap-2 text-green-600 hover:text-green-800 transition-all"
         >
@@ -211,18 +250,50 @@ const CreateVenue = () => {
             </div>
           </div>
 
-          {/* Type of Sports */}
+          {/* Type of Sports Offered (Multi-Select) */}
           <div>
             <label className="block text-gray-700 font-medium mb-1">Type of Sports Offered</label>
-            <input
-              type="text"
-              name="typeOfSports"
-              value={formData.typeOfSports}
-              onChange={handleChange}
-              placeholder="e.g. Basketball, Volleyball"
+            <select
+              onChange={handleAddSport}
               required
               className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
-            />
+              defaultValue=""
+            >
+              <option value="" disabled >
+                 Select a Sport
+              </option>
+              {sportsOptions
+                .filter((sport) => !formData.typeOfSports.includes(sport))
+                .map((sport) => (
+                  <option key={sport} value={sport}>
+                    {sport}
+                  </option>
+                ))}
+            </select>
+
+            {/* Selected sports tags */}
+            <div className="flex flex-wrap gap-2 mt-3">
+              {formData.typeOfSports.length === 0 && (
+                <p className="text-gray-500 italic text-sm">No sports selected yet.</p>
+              )}
+              {formData.typeOfSports.map((sport) => (
+                <div
+                  key={sport}
+                  className="flex items-center gap-2 bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-semibold"
+                >
+                  <span>{sport}</span>
+                  <button
+                    type="button"
+                    onClick={() => handleRemoveSport(sport)}
+                    className="hover:text-red-600 transition"
+                    aria-label={`Remove ${sport}`}
+                  >
+                    
+                    <FontAwesomeIcon icon={faTimes} />
+                  </button>
+                </div>
+              ))}
+            </div>
           </div>
 
           {/* Description */}
@@ -315,7 +386,7 @@ const CreateVenue = () => {
 
             <button
               type="button"
-             onClick={() => {
+              onClick={() => {
                 if (scheduleInput.date && scheduleInput.startTime && scheduleInput.endTime) {
                   const isDuplicate = bookingSchedule.some(
                     (schedule) =>

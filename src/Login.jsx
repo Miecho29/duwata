@@ -6,11 +6,7 @@ const Login = () => {
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-white via-green-50 to-white px-4 py-12 sm:px-6 lg:px-8 font-sans">
       <div className="max-w-md w-full space-y-8 bg-white p-8 rounded-3xl shadow-lg border border-green-100">
         <div className="text-center">
-          {/* <img
-            src="/1000001470.png"
-            alt="Logo"
-            className="mx-auto w-20 h-20 rounded-full border-2 border-green-400 shadow"
-          /> */}
+          
           <h2 className="mt-6 text-3xl font-bold text-green-700">
             Welcome To DuwaTa!
           </h2>
@@ -55,7 +51,7 @@ const Login = () => {
           <div className="flex items-center justify-between">
             <div className="text-sm">
               <Link
-                to="/forgot-password"
+                to="/ForgotPassword"
                 className="font-medium text-green-600 hover:text-green-500"
               >
                 Forgot your password?
@@ -64,12 +60,13 @@ const Login = () => {
           </div>
 
           <div>
-            <button
+            <Link
+              to="/Homepage"
               type="submit"
               className="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-full text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
             >
               Sign In
-            </button>
+            </Link>
           </div>
         </form>
 

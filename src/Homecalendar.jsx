@@ -66,7 +66,7 @@ function Homecalendar() {
     <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4 py-8 relative">
       {/* Fixed arrow top-left */}
       <Link
-        to="/"
+        to="/Homepage"
         className="fixed top-4 left-4 text-green-600 hover:text-green-800 transition"
         aria-label="Go to Homepage"
       >

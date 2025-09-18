@@ -70,7 +70,7 @@ const Homepage = () => {
 
   const confirmLogout = () => {
     setShowLogoutModal(false);
-    navigate("/login");
+    navigate("/");
   };
 
   const cancelLogout = () => {

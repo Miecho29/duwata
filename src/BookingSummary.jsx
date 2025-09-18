@@ -97,7 +97,7 @@ const BookingSummary = () => {
         {/* Action Buttons */}
         <div className="mt-6 flex flex-col sm:flex-row sm:justify-end sm:space-x-4 gap-2 sm:gap-0">
           <Link
-            to="/"
+            to="/Homepage"
             title="Cancel Booking"
             className="w-full sm:w-auto text-center px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition"
           >

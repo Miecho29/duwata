@@ -72,7 +72,7 @@ const PersonalInfo = () => {
       
       {/* Back Button */}
       <button
-        onClick={() => navigate("/")}
+        onClick={() => navigate("/Homepage")}
         className="self-start mb-8 flex items-center text-green-600 hover:text-green-800 font-semibold transition"
         aria-label="Back to homepage"
       >
