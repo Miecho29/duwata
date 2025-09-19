@@ -13,6 +13,7 @@ import BookingSummary from './BookingSummary';
 import Payment from './Payment';
 import Homecalendar from './Homecalendar';
 import ForgotPassword from './ForgotPassword';
+import MyVenues from './MyVenues';
 
 function App() {
   return (
@@ -30,6 +31,7 @@ function App() {
           <Route path="Payment" element={<Payment />} />
           <Route path="Homecalendar" element={<Homecalendar />} />
           <Route path="ForgotPassword" element={<ForgotPassword />} />
+          <Route path="MyVenues" element={<MyVenues />} />
         </Routes>
     </Router>
   );
