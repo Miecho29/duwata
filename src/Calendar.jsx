@@ -148,18 +148,18 @@ const Calendar = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 flex justify-center items-start py-12 px-4 relative">
-      <div className="w-full max-w-6xl bg-white p-4 sm:p-6 rounded-2xl shadow-2xl flex flex-col lg:flex-row gap-8 relative">
-        {/* Back Icon */}
-        <div className="absolute top-0 left-0 mt-3 ml-3">
-          <Link
-            to="/Details"
-            title="Back to Homepage"
-            className="flex items-center gap-2 text-green-600 hover:text-green-800 transition-all"
-          >
-            <FontAwesomeIcon icon={faArrowLeft} />
-          </Link>
-        </div>
+      {/* Back Icon fixed at upper left of viewport */}
+      <div className="fixed top-4 left-4 z-50">
+        <Link
+          to="/Details"
+          title="Back to Details"
+          className="flex items-center gap-2 text-green-600 hover:text-green-800 transition-all"
+        >
+          <FontAwesomeIcon icon={faArrowLeft} />
+        </Link>
+      </div>
 
+      <div className="w-full max-w-6xl bg-white p-4 sm:p-6 rounded-2xl shadow-2xl flex flex-col lg:flex-row gap-8 relative">
         {/* Main Panel - Calendar and Time Slots */}
         <div className="w-full flex flex-col lg:flex-row gap-6">
           {/* Calendar on Left */}

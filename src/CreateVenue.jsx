@@ -1,3 +1,5 @@
+// CreateVenue.jsx
+
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -14,7 +16,6 @@ import {
 const CreateVenue = () => {
   const navigate = useNavigate();
 
-  // Dropdown options for sports
   const sportsOptions = [
     "Basketball",
     "Volleyball",
@@ -32,7 +33,7 @@ const CreateVenue = () => {
     name: "",
     address: "",
     price: "",
-    typeOfSports: [], // changed to array
+    typeOfSports: [],
     description: "",
     contactPerson: "",
     mobileNumber: "+63",
@@ -42,7 +43,7 @@ const CreateVenue = () => {
 
   const [bookingSchedule, setBookingSchedule] = useState([]);
   const [scheduleInput, setScheduleInput] = useState({
-    date: "",
+    dates: [],
     startTime: "",
     endTime: "",
   });
@@ -71,7 +72,6 @@ const CreateVenue = () => {
 
     const afterPrefix = value.slice(3).replace(/[^0-9]/g, "");
     const limitedAfterPrefix = afterPrefix.slice(0, 10);
-
     const newValue = "+63" + limitedAfterPrefix;
 
     setFormData({ ...formData, mobileNumber: newValue });
@@ -87,9 +87,7 @@ const CreateVenue = () => {
     e.preventDefault();
 
     if (!validateMobileNumber(formData.mobileNumber)) {
-      setMobileError(
-        "Please enter a valid Philippine mobile number starting with +639 and 9 to 10 digits after."
-      );
+      setMobileError("Please enter a valid Philippine mobile number starting with +639.");
       return;
     }
 
@@ -121,23 +119,17 @@ const CreateVenue = () => {
     { name: "Cash", icon: faMoneyBillWave },
   ];
 
-  // NEW: handle selection of sports
   const handleAddSport = (e) => {
     const selectedSport = e.target.value;
-    if (
-      selectedSport &&
-      !formData.typeOfSports.includes(selectedSport)
-    ) {
+    if (selectedSport && !formData.typeOfSports.includes(selectedSport)) {
       setFormData({
         ...formData,
         typeOfSports: [...formData.typeOfSports, selectedSport],
       });
     }
-    // Reset the dropdown value so user can select again
     e.target.value = "";
   };
 
-  // NEW: remove selected sport
   const handleRemoveSport = (sport) => {
     setFormData({
       ...formData,
@@ -172,6 +164,7 @@ const CreateVenue = () => {
         <h2 className="text-3xl font-bold text-green-700 mb-6">Create a Venue</h2>
 
         <form onSubmit={handleSubmit} className="space-y-6">
+
           {/* Venue Name */}
           <div>
             <label className="block text-gray-700 font-medium mb-1">Venue Name</label>
@@ -210,9 +203,7 @@ const CreateVenue = () => {
               required
               maxLength={13}
               className={`w-full border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 ${
-                mobileError
-                  ? "border-red-500 focus:ring-red-500"
-                  : "border-gray-300 focus:ring-green-500"
+                mobileError ? "border-red-500 focus:ring-red-500" : "border-gray-300 focus:ring-green-500"
               }`}
             />
             {mobileError && (
@@ -250,32 +241,22 @@ const CreateVenue = () => {
             </div>
           </div>
 
-          {/* Type of Sports Offered (Multi-Select) */}
+          {/* Type of Sports Offered */}
           <div>
             <label className="block text-gray-700 font-medium mb-1">Type of Sports Offered</label>
             <select
               onChange={handleAddSport}
-              required
               className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
               defaultValue=""
             >
-              <option value="" disabled >
-                 Select a Sport
-              </option>
+              <option value="" disabled>Select a Sport</option>
               {sportsOptions
                 .filter((sport) => !formData.typeOfSports.includes(sport))
                 .map((sport) => (
-                  <option key={sport} value={sport}>
-                    {sport}
-                  </option>
+                  <option key={sport} value={sport}>{sport}</option>
                 ))}
             </select>
-
-            {/* Selected sports tags */}
             <div className="flex flex-wrap gap-2 mt-3">
-              {formData.typeOfSports.length === 0 && (
-                <p className="text-gray-500 italic text-sm">No sports selected yet.</p>
-              )}
               {formData.typeOfSports.map((sport) => (
                 <div
                   key={sport}
@@ -288,7 +269,6 @@ const CreateVenue = () => {
                     className="hover:text-red-600 transition"
                     aria-label={`Remove ${sport}`}
                   >
-                    
                     <FontAwesomeIcon icon={faTimes} />
                   </button>
                 </div>
@@ -319,22 +299,13 @@ const CreateVenue = () => {
                     key={name}
                     type="button"
                     onClick={() => {
-                      if (selected) {
-                        setFormData({
-                          ...formData,
-                          paymentMethods: formData.paymentMethods.filter((m) => m !== name),
-                        });
-                      } else {
-                        setFormData({
-                          ...formData,
-                          paymentMethods: [...formData.paymentMethods, name],
-                        });
-                      }
+                      const updated = selected
+                        ? formData.paymentMethods.filter((m) => m !== name)
+                        : [...formData.paymentMethods, name];
+                      setFormData({ ...formData, paymentMethods: updated });
                     }}
                     className={`flex items-center gap-2 px-4 py-2 rounded-lg border font-medium transition ${
-                      selected
-                        ? "bg-green-600 text-white border-green-600"
-                        : "bg-white text-gray-700 border-gray-300 hover:bg-green-50"
+                      selected ? "bg-green-600 text-white border-green-600" : "bg-white text-gray-700 border-gray-300 hover:bg-green-50"
                     }`}
                   >
                     <FontAwesomeIcon icon={icon} />
@@ -345,41 +316,44 @@ const CreateVenue = () => {
             </div>
           </div>
 
-          {/* Booking Schedule (Enhanced UI) */}
+          {/* Booking Schedule with Multi-Date Support */}
           <div className="border border-green-200 bg-green-50 rounded-xl p-5 shadow-sm">
-            <h3 className="text-lg font-semibold text-green-700 mb-4 flex items-center gap-2">
-              📅 Booking Schedule <span className="text-sm text-gray-500">(Add available slots)</span>
-            </h3>
+            <h3 className="text-lg font-semibold text-green-700 mb-4">📅 Booking Schedule</h3>
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-3">
               <div>
-                <label className="block text-sm text-gray-600 mb-1">Date</label>
+                <label className="block text-sm text-gray-600 mb-1">Dates</label>
                 <input
                   type="date"
-                  name="date"
-                  value={scheduleInput.date}
-                  onChange={(e) => setScheduleInput({ ...scheduleInput, date: e.target.value })}
-                  className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
+                  multiple
+                  onChange={(e) => {
+                    const selectedDates = Array.from(e.target.selectedOptions || [e.target])
+                      .map((opt) => opt.value || opt?.text || e.target.value)
+                      .filter(Boolean);
+                    setScheduleInput((prev) => ({
+                      ...prev,
+                      dates: selectedDates.length > 0 ? selectedDates : [e.target.value],
+                    }));
+                  }}
+                  className="w-full border border-gray-300 rounded-lg px-3 py-2"
                 />
               </div>
               <div>
                 <label className="block text-sm text-gray-600 mb-1">Start Time</label>
                 <input
                   type="time"
-                  name="startTime"
                   value={scheduleInput.startTime}
                   onChange={(e) => setScheduleInput({ ...scheduleInput, startTime: e.target.value })}
-                  className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
+                  className="w-full border border-gray-300 rounded-lg px-3 py-2"
                 />
               </div>
               <div>
                 <label className="block text-sm text-gray-600 mb-1">End Time</label>
                 <input
                   type="time"
-                  name="endTime"
                   value={scheduleInput.endTime}
                   onChange={(e) => setScheduleInput({ ...scheduleInput, endTime: e.target.value })}
-                  className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
+                  className="w-full border border-gray-300 rounded-lg px-3 py-2"
                 />
               </div>
             </div>
@@ -387,19 +361,31 @@ const CreateVenue = () => {
             <button
               type="button"
               onClick={() => {
-                if (scheduleInput.date && scheduleInput.startTime && scheduleInput.endTime) {
-                  const isDuplicate = bookingSchedule.some(
-                    (schedule) =>
-                      schedule.date === scheduleInput.date &&
-                      schedule.startTime === scheduleInput.startTime &&
-                      schedule.endTime === scheduleInput.endTime
+                const { dates, startTime, endTime } = scheduleInput;
+                if (dates.length > 0 && startTime && endTime) {
+                  const newSchedules = dates.map((date) => ({
+                    date,
+                    startTime,
+                    endTime,
+                  }));
+
+                  const uniqueSchedules = newSchedules.filter(
+                    (newItem) =>
+                      !bookingSchedule.some(
+                        (existing) =>
+                          existing.date === newItem.date &&
+                          existing.startTime === newItem.startTime &&
+                          existing.endTime === newItem.endTime
+                      )
                   );
-                  if (isDuplicate) {
-                    alert("This schedule slot already exists."); // or handle silently
+
+                  if (uniqueSchedules.length === 0) {
+                    alert("Selected schedules already exist.");
                     return;
                   }
-                  setBookingSchedule([...bookingSchedule, scheduleInput]);
-                  setScheduleInput({ date: "", startTime: "", endTime: "" });
+
+                  setBookingSchedule([...bookingSchedule, ...uniqueSchedules]);
+                  setScheduleInput({ dates: [], startTime: "", endTime: "" });
                 }
               }}
               className="mb-4 bg-green-600 text-white px-6 py-2 rounded-full hover:bg-green-700 transition-all shadow"
@@ -407,34 +393,29 @@ const CreateVenue = () => {
               ➕ Add Schedule
             </button>
 
-            {bookingSchedule.length > 0 ? (
+            {bookingSchedule.length > 0 && (
               <div className="space-y-2">
                 {bookingSchedule.map((item, index) => (
                   <div
                     key={index}
-                    className="flex items-center justify-between bg-white border border-gray-200 rounded-lg px-4 py-2 shadow-sm hover:shadow-md transition"
+                    className="flex items-center justify-between bg-white border border-gray-200 rounded-lg px-4 py-2 shadow-sm"
                   >
-                    <div className="text-gray-800 font-medium">
-                      <span className="inline-block bg-green-100 text-green-800 text-xs font-semibold px-2 py-1 rounded mr-2">
-                        {item.date}
-                      </span>
-                      <span className="text-sm">
+                    <div>
+                      <span className="text-green-700 font-medium">{item.date}</span>{" "}
+                      <span className="text-gray-600 text-sm">
                         {item.startTime} - {item.endTime}
                       </span>
                     </div>
                     <button
                       type="button"
                       onClick={() => setBookingSchedule(bookingSchedule.filter((_, i) => i !== index))}
-                      className="text-red-500 hover:text-red-700 p-1 rounded transition"
-                      aria-label="Remove schedule"
+                      className="text-red-500 hover:text-red-700"
                     >
                       <FontAwesomeIcon icon={faTrash} />
                     </button>
                   </div>
                 ))}
               </div>
-            ) : (
-              <p className="text-sm text-gray-500 italic">No booking slots added yet.</p>
             )}
           </div>
 
@@ -450,7 +431,7 @@ const CreateVenue = () => {
                 <span className="text-green-600 underline">click to browse</span>
               </p>
               <p className="text-sm text-gray-400 mt-1">
-                Supported formats: Images <br /> Maximum file size: 10MB
+                Supported formats: Images • Max size: 10MB
               </p>
               {formData.image && (
                 <p className="mt-2 text-green-700 font-semibold">Selected: {formData.image.name}</p>

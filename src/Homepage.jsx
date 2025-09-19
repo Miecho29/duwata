@@ -164,6 +164,9 @@ const Homepage = () => {
                   if (label === 'Create Venue') {
                     navigate('/CreateVenue');
                   }
+                  if (label === 'My Venues') {
+                    navigate('/MyVenues');
+                  }
                   // Add more navigations as needed
                 }}
               >
